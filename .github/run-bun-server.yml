@@ -1,0 +1,21 @@
+name: Run Bun Server
+
+on: [push]  # ou [workflow_dispatch] se quiser rodar manualmente
+
+jobs:
+  run-bun:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v2
+
+      - name: Install Bun
+        run: |
+          curl https://bun.sh/install | bash
+          export BUN_INSTALL="$HOME/.bun"
+          export PATH="$BUN_INSTALL/bin:$PATH"
+      
+      - name: Run Bun Server
+        run: |
+          bun run server.ts &
+          sleep 30 # Deixe o servidor rodar por 30 segundos para testes
