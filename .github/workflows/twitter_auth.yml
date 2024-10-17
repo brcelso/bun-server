@@ -1,0 +1,32 @@
+name: Twitter Auth Workflow
+
+on:
+  workflow_dispatch:  # Permite execução manual do workflow
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'  # Use a versão Python apropriada
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests requests-oauthlib python-dotenv
+
+      - name: Copy .env file
+        # Use 'secrets' para definir as variáveis, ou você pode armazenar o .env no repositório
+        run: |
+          echo "CONSUMER_KEY=${{ secrets.CONSUMER_KEY }}" >> .env
+          echo "CONSUMER_SECRET=${{ secrets.CONSUMER_SECRET }}" >> .env
+
+      - name: Run Python script
+        run: |
+          getmev2.py
